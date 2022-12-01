@@ -88,6 +88,7 @@ For exploration purposes, let's take the jacobian of the body-frame landmark wit
 landmark_body.jacobian(pose)
 ```
 ![images](docs/pose2.png)
+
 Note that even though the orientation is stored as a complex number, the tangent space is a scalar angle and SymForce understands that.
 
 Now compute the relative bearing angle:
@@ -212,6 +213,6 @@ circles represent the robot, and the dotted lines represent the bearing measurem
 from symforce.examples.robot_2d_localization.plotting import plot_solution
 plot_solution(optimizer, result)
 ```
-<img alt="Robot 2D Localization Solution" src="docs/static/images/robot_2d_localization/iterations.gif" width="600px"/>
+![gif](docs/iterations.gif)
 
-All of the code for this example can also be found in `symforce/examples/robot_2d_localization`.
+Source Code `data/2D_RobotLocalization.py`.
