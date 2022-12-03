@@ -14,20 +14,20 @@ SymForce terdiri dari 3 sistem, yaitu :
 
 ![images](https://symforce.org/docs/static/images/symforce_diagram.png)
 
-# Disclaimer
+# :bangbang: Disclaimer :bangbang:
 Untuk informasi dan Referensi apabila terjadi ERROR dapat melakukan pengecekan pada source berikut :
 
 - Source Code Github : `https://github.com/symforce-org/symforce`.
 Hal ini dikarenakan pemanggilan function dan method terdapat pada beberapa path yang telah ada dan penulis hanya melakukan overview dokumentasi.
 
-<h1 align="center">Build</h1>
+<h1 align="center">:information_source: Build :information_source:</h1>
 
 Tools and Compatible Version Language
 - Python 3.8+ 
 - C++14
 - CMake
 
-<h1 align="center">Features</h1>
+<h1 align="center">:star2: Features :star2:</h1>
 - Dapat mengimplementasikan simbolik geometri dan juga tipe kamera dengan menggunakan operasi Lie Group
 - Dapat meminimalkan bug, mengurangi duplikasi serta pembuatan code generation dengan runtime yang cepat.
 - Dapat melakukan komputasi untuk menghitung Tangent Space-Jacobian dengan optimal
@@ -35,7 +35,7 @@ Tools and Compatible Version Language
 - Termasuk ke dalam Tangent-space Optimization library tercepat berdasarkan grafik faktor untuk bahasa pemrograman C++ dan Python
 
 
-<h1 align="center">:desktop_computer: Instalisasi :desktop_computer:</h1>
+<h1 align="center">:desktop_computer: Installation :desktop_computer:</h1>
 
 Install menggunakan pip :
 
@@ -51,7 +51,7 @@ Kemudian untuk verifikasi hasil instalisasi dengan Python
 >>> sf.Rot3()
 ```
 
-<h1 align="center">Implementasi SymForce </h1>
+<h1 align="center">:sparkles: Implementasi SymForce :sparkles:</h1>
 
 Contoh Studi Kasus#
 Robot bergerak melalui bidang 2D dan memiliki goal untuk memperkirakan pose pada beberapa langkah kedepan dengan sebuah pengukuran kebisingan (noisy measurements). 
@@ -66,7 +66,7 @@ Berdasarkan kasus di atas, maka robot memiiki sudut dengan tujuan yang berlawana
 ![images](https://github.com/symforce-org/symforce/raw/main/docs/static/images/robot_2d_localization/problem_setup.png)
 
 
-<h1 align="center">Perhitungan matematika</h1>
+<h1 align="center">:beginner: Perhitungan matematika :beginner:</h1>
 
 Hal pertama yang harus kita lakukan adalah melakukan import librari symforce yang berisikan API SymPy dan untuk kasus ini kita akan menggunakan symbolic untuk dapat mengimplementasikan kasus di atas:
 ```python
@@ -97,7 +97,7 @@ landmark_body.jacobian(pose)
 ```
 ![images](docs/pose2.png)
 
-##### NOTE : Walaupun orientasi pengaplikasian adalah sebuah angka-angka yang kompleks, tetapi metode tangent space merupakan sebuah sudut scalar dan hal ini dapat membuat SymForce dapat mengerti untuk melakukan execute code program.
+##### :orange_book: NOTE : Walaupun orientasi pengaplikasian adalah sebuah angka-angka yang kompleks, tetapi metode tangent space merupakan sebuah sudut scalar dan hal ini dapat membuat SymForce dapat mengerti untuk melakukan execute code program.
 
 
 Kemudian kita dapat melakukan komputasi sudut relatif bearing :
@@ -118,7 +118,7 @@ sf.V3.symbolic("x").norm(epsilon=sf.epsilon())
 
 Untuk informasi lebih lanjut perihal Epsilon, dapat menelusuri link berikut : [Epsilon](https://symforce.org/tutorials/epsilon_tutorial.html)
 
-<h1 align="center">Pembuatan optimalisasi masalah</h1>
+<h1 align="center">:sparkle: Pembuatan optimalisasi masalah :sparkle:</h1>
 
 Kita akan melakukan pemodelan untuk kasus ini ke dalam sebuah factor graph dan menyelesaikannya dengan nonlinear least-squares.
 
@@ -202,7 +202,7 @@ for i in range(num_poses - 1):
 Berikut adalah visualisasi struktur dari factor graph :
 ![images](docs/Visualisasi.png)
 
-<h1 align="center">Penyelesaian Masalah</h1>
+<h1 align="center"> :small_blue_diamond: Penyelesaian Masalah :small_blue_diamond:</h1>
 
 Tujuan kita dapat untuk menemukan `poses` dari robot yang meminimalkan residual dari factor graph, kemudian kita asumsikan posisi landmark ke dalam bentuk yang dapat dicermati dengan baik. Oleh karena itu, kita dapat membuat sebuah [`Optimizer`](https://symforce.org/api/symforce.opt.optimizer.html?highlight=optimizer#module-symforce.opt.optimizer) untuk faktor yang telah ada dan melakukan optimalisasi terhadap pose keys (sisanya akan dianggap sebagai nilai konstan).
 ```python
