@@ -22,7 +22,7 @@ Hal ini dikarenakan pemanggilan function dan method terdapat pada beberapa path 
 
 <h1 align="center">:information_source: Build :information_source:</h1>
 
-Tools and Compatible Version Language
+Tools yang digunakan dan versi bahasa pemrograman yang kompatibel :
 - Python 3.8+ 
 - C++14
 - CMake
@@ -54,8 +54,7 @@ Kemudian untuk verifikasi hasil instalisasi dengan Python
 
 <h1 align="center">:sparkles: Implementasi SymForce :sparkles:</h1>
 
-Contoh Studi Kasus#
-Robot bergerak melalui bidang 2D dan memiliki goal untuk memperkirakan pose pada beberapa langkah kedepan dengan sebuah pengukuran kebisingan (noisy measurements). 
+Contoh Studi Kasus : Robot bergerak melalui bidang 2D dan memiliki goal untuk memperkirakan pose pada beberapa langkah kedepan dengan sebuah pengukuran kebisingan (noisy measurements). 
 
 Pengukuran yang harus dilakukan oleh Robot :
 
