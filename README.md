@@ -202,7 +202,7 @@ for i in range(num_poses - 1):
 ```
 
 Berikut adalah visualisasi struktur dari factor graph :
-![images](docs/Visualisasi.png)
+![images](docs/visualisasi.png)
 
 <h1 align="center"> :small_blue_diamond: Penyelesaian Masalah :small_blue_diamond:</h1>
 
