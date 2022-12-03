@@ -27,6 +27,8 @@ Tools yang digunakan dan versi bahasa pemrograman yang kompatibel :
 - C++14
 - CMake
 
+### :orange_book: NOTE : SymForce tidak support untuk OS Windows.
+
 <h1 align="center">:star2: Features :star2:</h1>
 
 - Dapat mengimplementasikan simbolik geometri dan juga tipe kamera dengan menggunakan operasi Lie Group
