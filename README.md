@@ -20,13 +20,14 @@ Untuk informasi dan Referensi apabila terjadi ERROR dapat melakukan pengecekan p
 - Source Code Github : `https://github.com/symforce-org/symforce`.
 Hal ini dikarenakan pemanggilan function dan method terdapat pada beberapa path yang telah ada dan penulis hanya melakukan overview dokumentasi.
 
-# Build
+<h1 align="center">Build</h1>
+
 Tools and Compatible Version Language
 - Python 3.8+ 
 - C++14
 - CMake
 
-## Features
+<h1 align="center">Features</h1>
 - Dapat mengimplementasikan simbolik geometri dan juga tipe kamera dengan menggunakan operasi Lie Group
 - Dapat meminimalkan bug, mengurangi duplikasi serta pembuatan code generation dengan runtime yang cepat.
 - Dapat melakukan komputasi untuk menghitung Tangent Space-Jacobian dengan optimal
@@ -34,7 +35,7 @@ Tools and Compatible Version Language
 - Termasuk ke dalam Tangent-space Optimization library tercepat berdasarkan grafik faktor untuk bahasa pemrograman C++ dan Python
 
 
-## Installation
+<h1 align="center">:desktop_computer: Instalisasi :desktop_computer:</h1>
 
 Install menggunakan pip :
 
@@ -50,7 +51,8 @@ Kemudian untuk verifikasi hasil instalisasi dengan Python
 >>> sf.Rot3()
 ```
 
-# Implementasi SymForce 
+<h1 align="center">Implementasi SymForce </h1>
+
 Contoh Studi Kasus#
 Robot bergerak melalui bidang 2D dan memiliki goal untuk memperkirakan pose pada beberapa langkah kedepan dengan sebuah pengukuran kebisingan (noisy measurements). 
 
@@ -64,14 +66,14 @@ Berdasarkan kasus di atas, maka robot memiiki sudut dengan tujuan yang berlawana
 ![images](https://github.com/symforce-org/symforce/raw/main/docs/static/images/robot_2d_localization/problem_setup.png)
 
 
-## Perhitungan matematika
+<h1 align="center">Perhitungan matematika</h1>
 
 Hal pertama yang harus kita lakukan adalah melakukan import librari symforce yang berisikan API SymPy dan untuk kasus ini kita akan menggunakan symbolic untuk dapat mengimplementasikan kasus di atas:
 ```python
 import symforce.symbolic as sf
 ```
 
-Create a symbolic 2D pose and landmark location. Using symbolic variables lets us explore and build up the math in a pure form.
+Kemudian kita dapat membuat sebuah simbolik pose 2D serta pembuatan lokasi landmark. Pada bagian ini, kita dapat menggunakan method symbolic dari symforce.
 ```python
 pose = sf.Pose2(
     t=sf.V2.symbolic("t"),
@@ -80,56 +82,55 @@ pose = sf.Pose2(
 landmark = sf.V2.symbolic("L")
 ```
 
-Let's transform the landmark into the local frame of the robot.  We choose to represent poses as
-`world_T_body`, meaning that to take a landmark in the world frame and get its position in the body
-frame, we do:
+Pada bagian selanjutnya kita dapat melakukan transformasi landmark ke dalam frame lokal dari robot. Untuk memrepresentasikan pose dari robot, kita menggunakan nama variabel `world_T_body`. Nama variabel dapat diganti sesuai dengan kebutuhan dari pengguna.
 ```python
 landmark_body = pose.inverse() * landmark
 ```
 ![images](docs/pose.png)
 
-You can see that `sf.Rot2` is represented internally by a complex number (𝑅𝑟𝑒, 𝑅𝑖𝑚) and we can study how it rotates the landmark 𝐿.
+Untuk kasus diatas, kita dapat melihat bahwa `sf.Rot2` direpresentasikan secara internal berdasarkan angka yang kompleks `(𝑅𝑟𝑒, 𝑅𝑖𝑚)`. Oleh karena itu, kita dapat melakukan analisa bagaimana hal tersebut melakukan rotasi terhadap landmark 𝐿.
 
-For exploration purposes, let's take the jacobian of the body-frame landmark with respect to the tangent space of the `Pose2`, parameterized as (𝜃, 𝑥, 𝑦):
+Kita dapat menggunakan metode jacobian dari landmark body-frame dengan pendekatan tangent space dari `Pose2`, sehingga diparameterisasi dengan simbol (𝜃, 𝑥, 𝑦) :
 
 ```python
 landmark_body.jacobian(pose)
 ```
 ![images](docs/pose2.png)
 
-Note that even though the orientation is stored as a complex number, the tangent space is a scalar angle and SymForce understands that.
+##### NOTE : Walaupun orientasi pengaplikasian adalah sebuah angka-angka yang kompleks, tetapi metode tangent space merupakan sebuah sudut scalar dan hal ini dapat membuat SymForce dapat mengerti untuk melakukan execute code program.
 
-Now compute the relative bearing angle:
+
+Kemudian kita dapat melakukan komputasi sudut relatif bearing :
 
 ```python
 sf.atan2(landmark_body[1], landmark_body[0])
 ```
 ![images](docs/atan2.png)
 
-One important note is that `atan2` is singular at (0, 0). In SymForce we handle this by placing a symbol ϵ (epsilon) that preserves the value of an expression in the limit of ϵ → 0, but allows evaluating at runtime with a very small nonzero value. Functions with singularities accept an `epsilon` argument:
+Pada bagian ini, sebagai catatan `atan2` merupakan sebuah singular dengan koordinat (0, 0). Dengan menggunakan SymForce kita dapat mengatasi ini dengan menambahkan simbol ϵ (epsilon) untuk mempertahankan nilai ekspresi dalam batas ` ϵ → 0 `, tetapi nilai evaluasi saat runtime dapat menghasilkan nonzero yang sangat kecil.
+
+Functions dengan singularitas yang menerima argumen `epsilon` :
 
 ```python
 sf.V3.symbolic("x").norm(epsilon=sf.epsilon())
 ```
 ![images](docs/epsilon.png)
 
-See the [Epsilon Tutorial](https://symforce.org/tutorials/epsilon_tutorial.html) in the SymForce Docs for more information.
+Untuk informasi lebih lanjut perihal Epsilon, dapat menelusuri link berikut : [Epsilon](https://symforce.org/tutorials/epsilon_tutorial.html)
 
-## Build an optimization problem
+<h1 align="center">Pembuatan optimalisasi masalah</h1>
 
-We will model this problem as a factor graph and solve it with nonlinear least-squares.
+Kita akan melakukan pemodelan untuk kasus ini ke dalam sebuah factor graph dan menyelesaikannya dengan nonlinear least-squares.
 
-First, we need to tell SymForce to use a nonzero epsilon to prevent singularities.  This isn't necessary when playing around with symbolic expressions like we were above, but it's important now that we want to numerically evaluate some results.  For more information, check out the [Epsilon Tutorial](https://symforce.org/tutorials/epsilon_tutorial.html) - for now, all you need to do is this:
+Tahap pertama, kita harus memberitahu SymForce untuk menggunakan nonzero epsilon dalam pencegahan singularitas. Hal penting yang harus kita ketahui pada bagian ini adalah mengevaluasi secara numerikal untuk beberapa output.
 
 ```python
 import symforce
 symforce.set_epsilon_to_symbol()
 ```
 
-This needs to be done before other parts of symforce are imported - if you're following along in a
-notebook you should add this at the top and restart the kernel.
-
-Now that epsilon is set up, we will instantiate numerical [`Values`](https://symforce.org/api/symforce.values.values.html?highlight=values#module-symforce.values.values) for the problem, including an initial guess for our unknown poses (just set them to identity).
+Ketika epsilon sudah terdefinisi, kemudian kita dapat mencoba numerical value dan juga dapat mencoba unknown poses (dapat diatur ke dalam identity)
+Link referensi untuk numerical value : [`Values`](https://symforce.org/api/symforce.values.values.html?highlight=values#module-symforce.values.values)
 
 ```python
 import numpy as np
@@ -147,7 +148,11 @@ initial_values = Values(
 )
 ```
 
-Next, we can set up the factors connecting our variables.  The residual function comprises of two terms - one for the bearing measurements and one for the odometry measurements. Let's formalize the math we just defined for the bearing measurements into a symbolic residual function:
+Setelah itu kita dapat mengatur faktor yang menghubungkan variabel-variabel yang kita gunakan. Pada bagian ini, fungsi residual terdiri dari 2 istilah, yaitu :
+- Pengukuran sudut bearing
+- Pengukuran odometri
+
+Kemudian kita dapat memformalisasikan perhitungan matematikan yang telah kita defenisikan untuk perhitungan bearing ke dalam function symbolic residual:
 
 ```python
 def bearing_residual(
@@ -158,9 +163,11 @@ def bearing_residual(
     return sf.V1(sf.wrap_angle(predicted_angle - angle))
 ```
 
-This function takes in a pose and landmark variable and returns the error between the predicted bearing angle and a measured value. Note that we call `sf.wrap_angle` on the angle difference to prevent wraparound effects.
+Function ini akan mengambil variabel pose, landmark dan juga mengembalikan error yang diperoleh dari prediksi sudut bearing serta memberikan nilai dari hasil perhitungan. 
 
-The residual for distance traveled is even simpler:
+Optional : Kita dapat memanggil `sf.wrap_angle` untuk mengatasi wraparound effects.
+
+Berikut adalah nilai residual untuk jarak yang ditempuh dan telah disederhanakan :
 
 ```python
 def odometry_residual(
@@ -169,7 +176,7 @@ def odometry_residual(
     return sf.V1((pose_b.t - pose_a.t).norm(epsilon=epsilon) - dist)
 ```
 
-Now we can create [`Factor`](https://symforce.org/api/symforce.opt.factor.html?highlight=factor#module-symforce.opt.factor) objects from the residual functions and a set of keys. The keys are named strings for the function arguments, which will be accessed by name from a [`Values`](https://symforce.org/api/symforce.values.values.html) class we later instantiate with numerical quantities.
+Kita dapat membuat object [`Factor`](https://symforce.org/api/symforce.opt.factor.html?highlight=factor#module-symforce.opt.factor) dari function residual dan dapat menentukan keys sesuai kebutuhan. Untuk penamaan `key` akan berjenis strings untuk function arguments yang dimana dapat diakses dari class [`Values`](https://symforce.org/api/symforce.values.values.html) dan 
 
 ```python
 from symforce.opt.factor import Factor
@@ -192,12 +199,12 @@ for i in range(num_poses - 1):
     ))
 ```
 
-Here is a visualization of the structure of this factor graph:
+Berikut adalah visualisasi struktur dari factor graph :
 ![images](docs/Visualisasi.png)
 
-## Solve the problem
+<h1 align="center">Penyelesaian Masalah</h1>
 
-Our goal is to find poses of the robot that minimize the residual of this factor graph, assuming the landmark positions in the world are known. We create an [`Optimizer`](https://symforce.org/api/symforce.opt.optimizer.html?highlight=optimizer#module-symforce.opt.optimizer)with these factors and tell it to only optimize the pose keys (the rest are held constant):
+Tujuan kita dapat untuk menemukan `poses` dari robot yang meminimalkan residual dari factor graph, kemudian kita asumsikan posisi landmark ke dalam bentuk yang dapat dicermati dengan baik. Oleh karena itu, kita dapat membuat sebuah [`Optimizer`](https://symforce.org/api/symforce.opt.optimizer.html?highlight=optimizer#module-symforce.opt.optimizer) untuk faktor yang telah ada dan melakukan optimalisasi terhadap pose keys (sisanya akan dianggap sebagai nilai konstan).
 ```python
 from symforce.opt.optimizer import Optimizer
 
@@ -209,13 +216,15 @@ optimizer = Optimizer(
 )
 ```
 
-Now run the optimization! This returns an [`Optimizer.Result`](https://symforce.org/api/symforce.opt.optimizer.html?highlight=optimizer#symforce.opt.optimizer.Optimizer.Result) object that contains the optimized values, error statistics, and per-iteration debug stats (if enabled).
+Kemudian kita dapat run hasil dari optimalisasi [`Optimizer.Result`](https://symforce.org/api/symforce.opt.optimizer.html?highlight=optimizer#symforce.opt.optimizer.Optimizer.Result). Pada bagian ini akan berisi nilai optimalisasi, statistik error dan juga iterasi debug stats (apabila digunakan).
 ```python
 result = optimizer.optimize(initial_values)
 ```
 
-Let's visualize what the optimizer did. The orange circles represent the fixed landmarks, the blue
-circles represent the robot, and the dotted lines represent the bearing measurements.
+Visualisasi pengoptimalan :
+ * Bentuk lingkaran berwarna orange merepresentasikan `fixed landmarks`
+ * Bentuk lingkaran biru merepresentasikan robot
+ * Garis putus-putus merepresentasikan perhitungan bearing.
 
 ```python
 from data.plotting import plot_solution
