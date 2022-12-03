@@ -28,6 +28,7 @@ Tools and Compatible Version Language
 - CMake
 
 <h1 align="center">:star2: Features :star2:</h1>
+
 - Dapat mengimplementasikan simbolik geometri dan juga tipe kamera dengan menggunakan operasi Lie Group
 - Dapat meminimalkan bug, mengurangi duplikasi serta pembuatan code generation dengan runtime yang cepat.
 - Dapat melakukan komputasi untuk menghitung Tangent Space-Jacobian dengan optimal
