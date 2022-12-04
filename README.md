@@ -1,6 +1,6 @@
 <h1 align="center">SymForce</h1>
 
-PDF Doc version : [Click Here](https://Zuf0831.github.io/symforce_Robotic/UTSRobotic_SymforcePDFVersion.pdf)
+PDF Doc version : [Click Here](https://github.com/Zuf0831/symforce_Robotic/blob/main/docs/UTSRobotic_SymforcePDFVersion.pdf)
 
 
 ![images](docs/Logo.png)
